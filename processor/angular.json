@@ -1,0 +1,118 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "bannerlord-economy": {
+            "root": "",
+            "sourceRoot": "src",
+            "projectType": "application",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/public",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "src/scss"
+                            ]
+                        },
+                        "assets": [
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "root/",
+                                "output": "/"
+                            }
+                        ],
+                        "styles": [
+                            "src/styles.scss"
+                        ],
+                        "buildOptimizer": false,
+                        "extractLicenses": false,
+                        "namedChunks": true,
+                        "optimization": false,
+                        "scripts": [],
+                        "sourceMap": true,
+                        "vendorChunk": true
+                    },
+                    "configurations": {
+                        "production": {
+                            "budgets": [
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb"
+                                }
+                            ],
+                            "buildOptimizer": true,
+                            "extractLicenses": true,
+                            "namedChunks": false,
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "vendorChunk": false,
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.production.ts"
+                                }
+                            ]
+                        }
+                    },
+                    "defaultConfiguration": ""
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "bannerlord-economy:build",
+                        "port": 4250
+                    },
+                    "configurations": {
+                        "local": {
+                            "browserTarget": "bannerlord-economy:build:local"
+                        },
+                        "production": {
+                            "browserTarget": "bannerlord-economy:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "bannerlord-economy:build"
+                    }
+                }
+            }
+        }
+    },
+    "defaultProject": "bannerlord-economy",
+    "schematics": {
+        "@schematics/angular:class": {
+            "skipTests": true
+        },
+        "@schematics/angular:component": {
+            "prefix": "app",
+            "skipTests": true,
+            "style": "scss"
+        },
+        "@schematics/angular:directive": {
+            "prefix": "app",
+            "skipTests": true
+        },
+        "@schematics/angular:guard": {
+            "skipTests": true
+        },
+        "@schematics/angular:module": {
+        },
+        "@schematics/angular:pipe": {
+            "skipTests": true
+        },
+        "@schematics/angular:service": {
+            "skipTests": true
+        }
+    }
+}

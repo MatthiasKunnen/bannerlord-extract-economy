@@ -1,0 +1,27 @@
+.logo {
+    height: 70%;
+
+    img {
+        width: auto;
+        height: 100%;
+        padding: 4px;
+    }
+}
+
+.github-link {
+
+    .github-logo {
+        margin: 0 8px 3px 0;
+    }
+
+    @media (max-width: 719px) {
+
+        .github-logo {
+            margin: 0 0 3px;
+        }
+
+        .github-label {
+            display: none;
+        }
+    }
+}

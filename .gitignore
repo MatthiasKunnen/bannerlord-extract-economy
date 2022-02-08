@@ -4,6 +4,8 @@
 /local
 *.local.*
 
+node_modules
+
 # Visual studio user-specific files
 *.rsuser
 *.suo

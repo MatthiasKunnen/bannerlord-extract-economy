@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+$brand-palette: (
+    50 : #fff8e2,
+    100 : #ffedb6,
+    200 : #ffe285,
+    300 : #ffd654,
+    400 : #ffcd30,
+    500 : #ffc40b,
+    600 : #ffbe0a,
+    700 : #ffb608,
+    800 : #ffaf06,
+    900 : #ffa203,
+    A100 : #fff,
+    A200 : #fffaf2,
+    A400 : #ffe5bf,
+    A700 : #ffdaa6,
+    contrast: (
+        50 : #000,
+        100 : #000,
+        200 : #000,
+        300 : #000,
+        400 : #000,
+        500 : #000,
+        600 : #000,
+        700 : #000,
+        800 : #000,
+        900 : #000,
+        A100 : #000,
+        A200 : #000,
+        A400 : #000,
+        A700 : #000,
+    )
+);
+
+$palette-primary: mat.define-palette($brand-palette, 700);
+$palette-warn: mat.define-palette(mat.$red-palette);
+
+$primary: mat.get-color-from-palette($palette-primary);
+$warn: mat.get-color-from-palette($palette-warn);
+
+$theme: mat.define-dark-theme($palette-primary, $palette-primary, $palette-warn);
+$background: map.get($theme, background);
+$foreground: map.get($theme, foreground);
+$is-dark-theme: map.get($theme, is-dark);
+$label-color: mat.get-color-from-palette($foreground, secondary-text, if($is-dark-theme, 0.7, 0.6));
+$warning: #ffc71e;
+
+$form-field-padding-bottom: 1.34375em; // From .mat-form-field-wrapper
+
+$enemy-red: #fc403d;

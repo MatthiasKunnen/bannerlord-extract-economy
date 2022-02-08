@@ -1,0 +1,96 @@
+---
+
+env:
+  es6: true
+
+overrides:
+  -
+    files:
+      - '*.js'
+    env:
+      node: true
+    extends:
+      - '@matthiaskunnen/eslint-config-base'
+
+  -
+    env:
+      node: true
+    files:
+      - 'api/**/*.ts'
+      - 'shared/**/*.ts'
+    extends:
+      - '@matthiaskunnen/eslint-config-typescript-node'
+
+    parser: '@typescript-eslint/parser'
+
+    parserOptions:
+      project:
+        - tsconfig.lint.json
+      sourceType: module
+    rules:
+      no-console: off
+
+  -
+    env:
+      node: true
+    extends:
+      - '@matthiaskunnen/eslint-config-typescript'
+    files:
+      - 'build/**/*.ts'
+    parser: '@typescript-eslint/parser'
+    parserOptions:
+      project:
+        - build/tsconfig.json
+      sourceType: module
+
+  -
+    extends:
+      - '@matthiaskunnen/eslint-config-angular'
+    env:
+      browser: true
+    files:
+      - 'src/**/*.interface.ts'
+      - 'src/**/*.model.ts'
+    parser: '@typescript-eslint/parser'
+    parserOptions:
+      project:
+        - tsconfig.lint.json
+      sourceType: module
+    rules:
+      '@typescript-eslint/member-ordering':
+        - error
+        -
+          default:
+            memberTypes:
+              - public-static-field
+              - protected-static-field
+              - private-static-field
+              - public-instance-field
+              - protected-instance-field
+              - private-instance-field
+              - public-constructor
+              - protected-constructor
+              - private-constructor
+              - public-static-method
+              - protected-static-method
+              - private-static-method
+              - public-instance-method
+              - protected-instance-method
+              - private-instance-method
+              - signature
+            order: alphabetically
+      no-console: error
+  -
+    extends:
+      - '@matthiaskunnen/eslint-config-angular'
+    env:
+      browser: true
+    files:
+      - 'src/**/*.ts'
+    parser: '@typescript-eslint/parser'
+    parserOptions:
+      project:
+        - tsconfig.lint.json
+      sourceType: module
+    rules:
+      no-console: error

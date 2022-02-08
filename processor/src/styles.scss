@@ -1,0 +1,92 @@
+@use '@angular/material' as mat;
+@use 'mixins';
+@use 'variables';
+@use 'normalize';
+@use 'material-theme';
+@use '~ngx-toastr/toastr';
+
+body {
+    overflow-x: hidden;
+}
+
+.text {
+
+    &-center {
+        text-align: center;
+    }
+
+    &-error {
+        color: mat.get-color-from-palette(mat.$red-palette, 500) !important;
+    }
+
+    &-success {
+        color: mat.get-color-from-palette(mat.$green-palette, 500) !important;
+    }
+
+    &-warning {
+        color: variables.$warning !important;
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.flex-spacer {
+    flex-grow: 1;
+}
+
+.split-16 {
+    display: grid;
+    grid-column-gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+button.link {
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #444;
+    outline: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+a.link {
+    transition: opacity 0.5ms ease-out;
+    text-decoration: underline;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+form {
+
+    mat-form-field,
+    input {
+        width: 100%;
+    }
+
+    .form-row {
+
+        @media (min-width: 480px) {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            mat-form-field {
+                margin-right: 16px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+
+.cdk-overlay-pane {
+    max-width: 95vw !important;
+}

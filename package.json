@@ -1,0 +1,11 @@
+{
+    "name": "bannerlord-economy",
+    "version": "0.0.0",
+    "private": true,
+    "workspaces": [
+        "processor"
+    ],
+    "scripts": {
+        "build": "yarn workspace processor run build:production && mkdir config && mv processor/dist/nginx.conf config/nginx.conf.erb"
+    }
+}
