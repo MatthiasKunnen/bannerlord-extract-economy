@@ -82,31 +82,9 @@ rules:
   media-feature-name-case: lower
   media-feature-name-value-allowed-list:
     min-width:
-      - 360px
-      - 400px
-      - 480px
-      - 600px
-      - 720px
-      - 840px
-      - 960px
-      - 1024px
-      - 1280px
-      - 1440px
-      - 1600px
-      - 1920px
+      - "/^.*\\$.*|\\d*[02468]px$/"
     max-width:
-      - 359px
-      - 399px
-      - 479px
-      - 599px
-      - 719px
-      - 839px
-      - 959px
-      - 1023px
-      - 1279px
-      - 1439px
-      - 1599px
-      - 1919px
+      - "/^.*\\$.*|\\d*[13579]px$/"
   media-feature-parentheses-space-inside: never
   media-feature-range-operator-space-after: always
   media-feature-range-operator-space-before: always
