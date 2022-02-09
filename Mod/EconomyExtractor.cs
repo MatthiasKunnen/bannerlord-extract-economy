@@ -56,27 +56,22 @@ namespace EconomyExtractor {
         }
 
         private void ExtractEconomy() {
-            var items = Items.All.Where(item => {
-                return item.Type == ItemTypeEnum.Animal
-                       || item.Type == ItemTypeEnum.Goods
-                       || item.Type == ItemTypeEnum.Horse;
-            });
-            var export = new Dictionary<string, SettlementEconomy>();
+            var items = Items.All
+                .Where(item => item.Type == ItemTypeEnum.Animal
+                               || item.Type == ItemTypeEnum.Goods
+                               || item.Type == ItemTypeEnum.Horse)
+                .ToList();
+            var export = new Dictionary<string, ItemEconomy>();
 
-            var settlementsWithMarkets = Village.All.Concat<SettlementComponent>(Town.AllTowns);
+            var settlementsWithMarkets = Village.All.Concat<SettlementComponent>(Town.AllTowns).ToList();
 
-            foreach (var settlement in settlementsWithMarkets) {
-                var settlementEconomy = new SettlementEconomy() {
-                    Type = settlement.GetType().Name,
+            foreach (var item in items) {
+                var itemEconomy = new ItemEconomy() {
+                    Type = item.Type.ToString(),
                 };
 
-                foreach (var item in items) {
-                    if (settlementEconomy.Goods.ContainsKey(item.Name.ToString())) {
-                        // Horses appear multiple times in the items list
-                        continue;
-                    }
-
-                    var itemEconomy = new ItemEconomy() {
+                foreach (var settlement in settlementsWithMarkets) {
+                    var settlementEconomy = new SettlementEconomy() {
                         BuyPrice = settlement.GetItemPrice(
                             item: item,
                             tradingParty: MobileParty.MainParty,
@@ -85,23 +80,28 @@ namespace EconomyExtractor {
                             item: item,
                             tradingParty: MobileParty.MainParty,
                             isSelling: true),
+                        SettlementName = settlement.Name.ToString(),
+                        SettlementType = settlement.GetType().Name
                     };
 
                     if (settlement is Town town) {
-                        itemEconomy.Demand = town.MarketData.GetDemand(item.ItemCategory);
-                        itemEconomy.Supply = town.MarketData.GetSupply(item.ItemCategory);
+                        settlementEconomy.Demand = town.MarketData.GetDemand(item.ItemCategory);
+                        settlementEconomy.Supply = town.MarketData.GetSupply(item.ItemCategory);
                     }
 
-                    settlementEconomy.Goods.Add(item.Name.ToString(), itemEconomy);
+                    itemEconomy.Prices.Add(settlementEconomy);
                 }
 
-                export.Add(settlement.Name.ToString(), settlementEconomy);
+                if (!export.ContainsKey(item.Name.ToString())) {
+                    // @todo Look into why duplicate horse names exist
+                    export.Add(item.Name.ToString(), itemEconomy);
+                }
             }
 
             ExportEconomy(export);
         }
 
-        private void ExportEconomy(Dictionary<string, SettlementEconomy> data) {
+        private void ExportEconomy(Dictionary<string, ItemEconomy> data) {
             try {
                 File.WriteAllText(this._economyOutputPath, JsonConvert.SerializeObject(data, Formatting.Indented));
                 InformationManager.DisplayMessage(new InformationMessage($"Economy exported to {this._economyOutputPath}"));

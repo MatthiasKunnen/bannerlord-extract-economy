@@ -1,12 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EconomyExtractor {
 
     class ItemEconomy {
+
+        public List<SettlementEconomy> Prices { get; } = new List<SettlementEconomy>();
+
+        public string Type { get; set; }
+    }
+
+    class SettlementEconomy {
 
         public int BuyPrice { get; set; }
 
@@ -15,12 +18,9 @@ namespace EconomyExtractor {
         public float? Demand { get; set; }
 
         public float? Supply { get; set; }
-    }
 
-    class SettlementEconomy {
+        public string SettlementName { get; set; }
 
-        public Dictionary<string, ItemEconomy> Goods { get; } = new Dictionary<string, ItemEconomy>();
-
-        public string Type { get; set; }
+        public string SettlementType { get; set; }
     }
 }

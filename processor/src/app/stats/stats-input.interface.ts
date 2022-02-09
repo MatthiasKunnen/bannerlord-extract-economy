@@ -1,20 +1,17 @@
 export interface Stats {
-    [city: string]: CityStats;
+    [product: string]: Product;
 }
 
-export interface CityStats {
-    Goods: CityGoods;
-    Type: 'Village' | 'Town';
+export interface Product {
+    Type?: string;
+    Prices: Array<Price>;
 }
 
-export interface CityGoods {
-    [product: string]: ProductStats;
-}
-
-export interface ProductStats {
+export interface Price {
     BuyPrice: number;
     Demand: number | null;
-    Name: string;
     SellPrice: number;
+    SettlementName: string;
+    SettlementType: 'Village' | 'Town';
     Supply: number | null;
 }

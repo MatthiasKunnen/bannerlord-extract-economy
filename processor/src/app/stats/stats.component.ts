@@ -35,40 +35,38 @@ export class StatsComponent implements OnInit {
     }
 
     async loadStats(stats: Stats) {
-        const goods = Object.entries(stats).reduce((acc, [city, cityStats]) => {
-            if (cityStats.Type === 'Village') {
+        this.products = Object.entries(stats).reduce<Array<Product>>((
+            acc,
+            [productName, productInfo],
+        ) => {
+            if (excludedProducts.has(productName)) {
                 return acc;
             }
 
-            for (const [productName, productInfo] of Object.entries(cityStats.Goods)) {
-                if (excludedProducts.has(productName)) {
+            const product: Product = {
+                buyPrices: [],
+                buySettlements: [],
+                name: productName,
+                sellPrices: [],
+                sellSettlements: [],
+            };
+
+            for (const price of productInfo.Prices) {
+                if (price.SettlementType === 'Village') {
                     continue;
                 }
 
-                let product = acc.get(productName);
-
-                if (product === undefined) {
-                    product = {
-                        buyPrices: [],
-                        buySettlements: [],
-                        name: productName,
-                        sellPrices: [],
-                        sellSettlements: [],
-                    };
-                    acc.set(productName, product);
-                }
-
-                product.buyPrices.push(productInfo.BuyPrice);
-                product.buySettlements.push(city);
-
-                product.sellPrices.push(productInfo.SellPrice);
-                product.sellSettlements.push(city);
+                product.buyPrices.push(price.BuyPrice);
+                product.buySettlements.push(price.SettlementName);
+                product.sellPrices.push(price.SellPrice);
+                product.sellSettlements.push(price.SettlementName);
             }
 
-            return acc;
-        }, new Map<string, Product>());
+            acc.push(product);
 
-        this.products = [...goods.values()].sort((a, b) => a.name.localeCompare(b.name));
+            return acc;
+        }, []).sort((a, b) => a.name.localeCompare(b.name));
+
         this.stats = stats;
         this.loading = false;
     }
