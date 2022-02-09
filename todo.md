@@ -1,0 +1,12 @@
+# todo
+- Fix Roboto font loading on each component load
+- Automatic columns/row adjustment
+- Redraw on resize
+- Filter on village/town
+- Different marker color for village/town
+- Custom column adjustment
+- Sort in same order as game
+- Custom file import
+- One large graph with all products
+- Search by product type?
+- Add icon to graph titles

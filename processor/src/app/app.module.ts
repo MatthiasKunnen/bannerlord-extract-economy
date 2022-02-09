@@ -2,7 +2,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import {registerLocaleData} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import locale from '@angular/common/locales/en-BE';
-import {ErrorHandler, LOCALE_ID, NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {
@@ -24,6 +24,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NotFoundComponent} from './error/not-found/not-found.component';
 import {HeaderComponent} from './layout/header/header.component';
+import {ProductChartComponent} from './stats/product-chart/product-chart.component';
 import {StatsComponent} from './stats/stats.component';
 import {decoverto} from './utils/decoverto.util';
 
@@ -39,6 +40,7 @@ const matFormFieldDefaultOptions: MatFormFieldDefaultOptions = {
         HeaderComponent,
         NotFoundComponent,
         StatsComponent,
+        ProductChartComponent,
     ],
     imports: [
         BrowserAnimationsModule,
