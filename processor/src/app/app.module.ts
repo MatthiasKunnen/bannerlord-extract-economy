@@ -24,7 +24,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NotFoundComponent} from './error/not-found/not-found.component';
 import {HeaderComponent} from './layout/header/header.component';
+import {AllChartComponent} from './stats/all-chart/all-chart.component';
 import {ProductChartComponent} from './stats/product-chart/product-chart.component';
+import {StatsSettingsComponent} from './stats/settings/settings.component';
 import {StatsComponent} from './stats/stats.component';
 import {decoverto} from './utils/decoverto.util';
 
@@ -36,11 +38,13 @@ const matFormFieldDefaultOptions: MatFormFieldDefaultOptions = {
 
 @NgModule({
     declarations: [
+        AllChartComponent,
         AppComponent,
         HeaderComponent,
         NotFoundComponent,
-        StatsComponent,
         ProductChartComponent,
+        StatsComponent,
+        StatsSettingsComponent,
     ],
     imports: [
         BrowserAnimationsModule,

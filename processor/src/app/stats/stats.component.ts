@@ -15,9 +15,10 @@ const excludedProducts = new Set([
 })
 export class StatsComponent implements OnInit {
 
-    products: Array<Product>;
+    display: 'all' | 'by-product' = 'by-product';
     error: string | null = null;
     loading = true;
+    products: Array<Product>;
 
     private stats: Stats;
 

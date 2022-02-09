@@ -1,6 +1,10 @@
-<ng-container *ngIf="loading">
+<ng-container *ngIf="loading; else content">
     <mat-spinner id="loading"></mat-spinner>
 </ng-container>
-<div *ngIf="!loading" class="products">
-    <app-product-chart *ngFor="let product of products" [product]="product"></app-product-chart>
-</div>
+<ng-template #content>
+    <div class="products" *ngIf="display === 'by-product'">
+        <app-product-chart *ngFor="let product of products" [product]="product"></app-product-chart>
+    </div>
+    <app-all-chart *ngIf="display === 'all'" [products]="products"></app-all-chart>
+    <app-stats-settings></app-stats-settings>
+</ng-template>
