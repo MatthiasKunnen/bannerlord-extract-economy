@@ -36,6 +36,10 @@ export class StatsComponent implements OnInit {
 
     async loadStats(stats: Stats) {
         const goods = Object.entries(stats).reduce((acc, [city, cityStats]) => {
+            if (cityStats.Type === 'Village') {
+                return acc;
+            }
+
             for (const [productName, productInfo] of Object.entries(cityStats.Goods)) {
                 if (excludedProducts.has(productName)) {
                     continue;
@@ -57,10 +61,8 @@ export class StatsComponent implements OnInit {
                 product.buyPrices.push(productInfo.BuyPrice);
                 product.buySettlements.push(city);
 
-                if (cityStats.Type !== 'Village') {
-                    product.sellPrices.push(productInfo.SellPrice);
-                    product.sellSettlements.push(city);
-                }
+                product.sellPrices.push(productInfo.SellPrice);
+                product.sellSettlements.push(city);
             }
 
             return acc;
