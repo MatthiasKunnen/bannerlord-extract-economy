@@ -68,7 +68,7 @@ export class StatsComponent implements OnInit {
             return acc;
         }, new Map<string, Product>());
 
-        this.products = [...goods.values()];
+        this.products = [...goods.values()].sort((a, b) => a.name.localeCompare(b.name));
         this.stats = stats;
         this.loading = false;
     }
