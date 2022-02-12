@@ -43,7 +43,7 @@ namespace EconomyExtractor {
                             try {
                                 ExtractEconomy();
                             } catch (Exception ex) {
-                                MessageBox.Show($"Exception occured while extracing economy.\n\n{ExceptionHandler.ToString(ex)}");
+                                MessageBox.Show($"Exception occured while extracting economy.\n\n{ExceptionHandler.ToString(ex)}");
                             }
                         },
                         isLeave: true,
