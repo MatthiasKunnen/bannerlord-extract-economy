@@ -57,7 +57,9 @@ namespace EconomyExtractor {
 
         private void ExtractEconomy() {
             var items = Items.All.Where(item => {
-                return item.Type == ItemTypeEnum.Horse || item.Type == ItemTypeEnum.Goods;
+                return item.Type == ItemTypeEnum.Animal
+                       || item.Type == ItemTypeEnum.Goods
+                       || item.Type == ItemTypeEnum.Horse;
             });
             var export = new Dictionary<string, SettlementEconomy>();
 
