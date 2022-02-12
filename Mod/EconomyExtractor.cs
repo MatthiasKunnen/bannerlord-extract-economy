@@ -13,6 +13,8 @@ namespace EconomyExtractor {
 
     public class EconomyExtractor : CampaignBehaviorBase {
 
+        private string _economyOutputPath;
+
         public override void RegisterEvents() {
             CampaignEvents.OnSessionLaunchedEvent.AddNonSerializedListener(this, OnSessionLaunched);
         }
@@ -22,6 +24,10 @@ namespace EconomyExtractor {
         }
 
         private void OnSessionLaunched(CampaignGameStarter gameStarter) {
+            var dataFolder = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "bannerlord-economy-mod");
+            Directory.CreateDirectory(dataFolder);
+            this._economyOutputPath = Path.Combine(dataFolder, "economy-export.json");
+
             string[] menusToAppend = { "town", "village" };
             foreach (var menuId in menusToAppend) {
                 try {
@@ -95,9 +101,8 @@ namespace EconomyExtractor {
 
         private void ExportEconomy(Dictionary<string, SettlementEconomy> data) {
             try {
-                var path = Path.Combine(Path.GetTempPath(), "Bannerlord-economy.json"); ;
-                File.WriteAllText(path, JsonConvert.SerializeObject(data, Formatting.Indented));
-                InformationManager.DisplayMessage(new InformationMessage($"Economy exported to {path}"));
+                File.WriteAllText(this._economyOutputPath, JsonConvert.SerializeObject(data, Formatting.Indented));
+                InformationManager.DisplayMessage(new InformationMessage($"Economy exported to {this._economyOutputPath}"));
             } catch (Exception ex) {
                 MessageBox.Show($"Error exporting economy to file.\n\n{ExceptionHandler.ToString(ex)}");
             }
