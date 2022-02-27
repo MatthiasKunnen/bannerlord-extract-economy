@@ -6,6 +6,10 @@
     margin: 0 auto;
 }
 
+#stats-input {
+    display: none;
+}
+
 .products {
     display: grid;
     grid-template-columns: 1fr;

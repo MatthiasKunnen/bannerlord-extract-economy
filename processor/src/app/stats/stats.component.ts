@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ToastrService} from 'ngx-toastr';
 
 import {Logger} from '../utils/logger.util';
 import {Stats} from './stats-input.interface';
@@ -21,10 +22,17 @@ export class StatsComponent implements OnInit {
 
     private stats: Stats;
 
+    constructor(
+        private readonly toastr: ToastrService,
+    ) {
+    }
+
     ngOnInit(): void {
         fetch('/assets/bannerlord-economy.json')
             .then(async data => data.json())
-            .then(async data => this.loadStats(data))
+            .then(async data => {
+                this.loadStats(data);
+            })
             .catch(error => {
                 Logger.error({
                     error,
@@ -34,7 +42,8 @@ export class StatsComponent implements OnInit {
             });
     }
 
-    async loadStats(stats: Stats) {
+    loadStats(stats: Stats) {
+        this.loading = true;
         this.products = Object.entries(stats).reduce<Array<Product>>((
             acc,
             [productName, productInfo],
@@ -69,5 +78,40 @@ export class StatsComponent implements OnInit {
 
         this.stats = stats;
         this.loading = false;
+    }
+
+    onStatsFileChange(event: Event) {
+        const fileInput = event.target as HTMLInputElement;
+        const files = fileInput.files;
+
+        if (files === null) {
+            return;
+        }
+
+        this.loading = true;
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (typeof reader.result !== 'string') {
+                return;
+            }
+
+            try {
+                this.loadStats(JSON.parse(reader.result));
+            } catch (error: any) {
+                this.loading = false;
+                Logger.error({
+                    error,
+                    message: 'Failed to update stats',
+                    info: {
+                        reader,
+                    },
+                });
+                this.toastr.error(error.message, 'Failed to update stats');
+            }
+        };
+        reader.onabort = () => {
+            this.loading = false;
+        };
+        reader.readAsText(files[0]);
     }
 }

@@ -1,3 +1,11 @@
+<button mat-raised-button (click)="statsInput.click()">
+    Upload stats
+</button>
+<input type="file"
+       #statsInput
+       id="stats-input"
+       accept=".json,application/json"
+       (change)="onStatsFileChange($event)"/>
 <ng-container *ngIf="loading">
     <mat-spinner id="loading"></mat-spinner>
 </ng-container>
