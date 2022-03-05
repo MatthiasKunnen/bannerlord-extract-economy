@@ -6,6 +6,10 @@ import {Stats} from './stats-input.interface';
 import {Product} from './stats.interface';
 
 const excludedProducts = new Set([
+    'Cat',
+    'Chicken',
+    'Dog',
+    'Goose',
     'Stolen Goods',
     'Trash Item',
 ]);
