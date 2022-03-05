@@ -84,9 +84,21 @@ namespace EconomyExtractor {
                         SettlementType = settlement.GetType().Name
                     };
 
-                    if (settlement is Town town) {
-                        settlementEconomy.Demand = town.MarketData.GetDemand(item.ItemCategory);
-                        settlementEconomy.Supply = town.MarketData.GetSupply(item.ItemCategory);
+                    switch (settlement) {
+                        case Town town: {
+                            var categoryData = town.MarketData.GetCategoryData(item.ItemCategory);
+                            settlementEconomy.InStore = categoryData.InStore;
+                            settlementEconomy.InStoreValue = categoryData.InStoreValue;
+                            settlementEconomy.Demand = town.MarketData.GetDemand(item.ItemCategory);
+                            settlementEconomy.Supply = town.MarketData.GetSupply(item.ItemCategory);
+                            break;
+                        }
+                        case Village village: {
+                            var categoryData = village.MarketTown.MarketData.GetCategoryData(item.ItemCategory);
+                            settlementEconomy.InStore = categoryData.InStore;
+                            settlementEconomy.InStoreValue = categoryData.InStore;
+                            break;
+                        }
                     }
 
                     itemEconomy.Prices.Add(settlementEconomy);

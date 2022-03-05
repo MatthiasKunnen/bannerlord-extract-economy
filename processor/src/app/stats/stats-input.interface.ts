@@ -10,6 +10,8 @@ export interface Product {
 export interface Price {
     BuyPrice: number;
     Demand: number | null;
+    InStore: number;
+    InStoreValue: number;
     SellPrice: number;
     SettlementName: string;
     SettlementType: 'Village' | 'Town';

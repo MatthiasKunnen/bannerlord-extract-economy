@@ -13,6 +13,10 @@ namespace EconomyExtractor {
 
         public int BuyPrice { get; set; }
 
+        public int InStore { get; set; }
+
+        public int InStoreValue { get; set; }
+
         public int SellPrice { get; set; }
 
         public float? Demand { get; set; }

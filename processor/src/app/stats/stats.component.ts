@@ -69,8 +69,11 @@ export class StatsComponent implements OnInit {
                     continue;
                 }
 
-                product.buyPrices.push(price.BuyPrice);
-                product.buySettlements.push(price.SettlementName);
+                if (price.InStore > 0) {
+                    product.buyPrices.push(price.BuyPrice);
+                    product.buySettlements.push(`${price.SettlementName} (${price.InStore})`);
+                }
+
                 product.sellPrices.push(price.SellPrice);
                 product.sellSettlements.push(price.SettlementName);
             }
