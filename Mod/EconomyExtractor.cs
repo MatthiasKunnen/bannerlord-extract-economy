@@ -5,28 +5,50 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.CampaignSystem.GameMenus;
-using TaleWorlds.Core;
+using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Settlements;
+using TaleWorlds.CampaignSystem.Settlements.Workshops;
+using TaleWorlds.Library;
 using static TaleWorlds.Core.ItemObject;
 
 namespace EconomyExtractor {
+    public class WorkshopExport {
+
+
+        public int Capital { get; set; }
+        public int Income { get; set; }
+        public int Expense { get; set; }
+        public int WorkShopExpense { get; set; }
+        public int InitialCapital { get; set; }
+        public int ProfitMade { get; set; }
+        public int NotRunnedDays { get; set; }
+        public string Type { get; set; }
+        public string Town { get; set; }
+    }
+
+    public class WorkshopTownExport {
+        public List<WorkshopExport> Workshops { get; } = new List<WorkshopExport>();
+    }
 
     public class EconomyExtractor : CampaignBehaviorBase {
-
         private string _economyOutputPath;
+        private string _workshopOutputPath;
+
 
         public override void RegisterEvents() {
             CampaignEvents.OnSessionLaunchedEvent.AddNonSerializedListener(this, OnSessionLaunched);
         }
 
         public override void SyncData(IDataStore dataStore) {
-
         }
 
         private void OnSessionLaunched(CampaignGameStarter gameStarter) {
             var dataFolder = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "bannerlord-economy-mod");
             Directory.CreateDirectory(dataFolder);
             this._economyOutputPath = Path.Combine(dataFolder, "economy-export.json");
+            this._workshopOutputPath = Path.Combine(dataFolder, "workshop-export.json");
 
             string[] menusToAppend = { "town", "village" };
             foreach (var menuId in menusToAppend) {
@@ -42,6 +64,7 @@ namespace EconomyExtractor {
                         consequence: (MenuCallbackArgs args) => {
                             try {
                                 ExtractEconomy();
+                                ExtractWorkshops();
                             } catch (Exception ex) {
                                 MessageBox.Show($"Exception occured while extracting economy.\n\n{ExceptionHandler.ToString(ex)}");
                             }
@@ -52,6 +75,37 @@ namespace EconomyExtractor {
                 } catch (Exception ex) {
                     MessageBox.Show($"Exception occured while trying to add menu option {menuId}.\n\n{ExceptionHandler.ToString(ex)}");
                 }
+            }
+        }
+
+        private void ExtractWorkshops() {
+            var export = new List<WorkshopExport>();
+
+            foreach (Town town in Town.AllTowns) {
+
+                foreach (Workshop workshop in town.Workshops.Where(workshop => !workshop.WorkshopType.IsHidden)) {
+                    var workshopExport = new WorkshopExport() {
+                        Town = town.Name.ToString(),
+                        Income = Campaign.Current.Models.ClanFinanceModel.CalculateOwnerIncomeFromWorkshop(workshop),
+                        Expense = Campaign.Current.Models.ClanFinanceModel.CalculateOwnerExpenseFromWorkshop(workshop),
+                        Capital = workshop.Capital,
+                        WorkShopExpense = workshop.Expense,
+                        InitialCapital = workshop.InitialCapital,
+                        ProfitMade = workshop.ProfitMade,
+                        NotRunnedDays = workshop.NotRunnedDays,
+                        Type = workshop.WorkshopType.SignMeshName,
+                    };
+
+                    export.Add(workshopExport);
+                }
+            }
+
+            try {
+                File.WriteAllText(this._workshopOutputPath, JsonConvert.SerializeObject(export, Formatting.Indented));
+                InformationManager.DisplayMessage(
+                    new InformationMessage($"Workshops exported to {this._workshopOutputPath}"));
+            } catch (Exception ex) {
+                MessageBox.Show($"Error exporting workshops to file.\n\n{ExceptionHandler.ToString(ex)}");
             }
         }
 
