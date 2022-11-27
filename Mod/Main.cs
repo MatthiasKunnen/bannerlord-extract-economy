@@ -12,6 +12,7 @@ namespace EconomyExtractor {
 
             if (gameStarterObject is CampaignGameStarter campaignGameStarter) {
                 campaignGameStarter.AddBehavior(new EconomyExtractor());
+                campaignGameStarter.AddBehavior(new NoFiefElectionCampaignBehavior());
             }
         }
     }
