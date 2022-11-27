@@ -93,12 +93,12 @@ namespace EconomyExtractor {
                             settlementEconomy.Supply = town.MarketData.GetSupply(item.ItemCategory);
                             break;
                         }
-                        case Village village: {
-                            var categoryData = village.MarketTown.MarketData.GetCategoryData(item.ItemCategory);
-                            settlementEconomy.InStore = categoryData.InStore;
-                            settlementEconomy.InStoreValue = categoryData.InStore;
-                            break;
-                        }
+                        // case Village village: {
+                        //     var categoryData = village.MarketData.GetCategoryData(item.ItemCategory);
+                        //     settlementEconomy.InStore = categoryData.InStore;
+                        //     settlementEconomy.InStoreValue = categoryData.InStore;
+                        //     break;
+                        // }
                     }
 
                     itemEconomy.Prices.Add(settlementEconomy);
