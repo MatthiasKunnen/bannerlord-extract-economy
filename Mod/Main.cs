@@ -8,6 +8,7 @@ namespace EconomyExtractor {
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject) {
             base.OnGameStart(game, gameStarterObject);
+            gameStarterObject.AddModel(new CustomDisguiseDetectionModel());
 
             if (gameStarterObject is CampaignGameStarter campaignGameStarter) {
                 campaignGameStarter.AddBehavior(new EconomyExtractor());
